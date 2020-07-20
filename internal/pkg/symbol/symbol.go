@@ -1,17 +1,15 @@
 package symbol
 
-import "fmt"
-
 // Table is a struct that contains a symbol table and counter for setting new memory addresses
 type Table struct {
-	table   map[string]int
-	counter int
+	table   map[string]int16
+	counter int16
 }
 
 // NewTable returns a new Table
-func NewTable() *Table {
+func New() *Table {
 	return &Table{
-		table: map[string]int{
+		table: map[string]int16{
 			"SP":     0,
 			"LCL":    1,
 			"ARG":    2,
@@ -57,27 +55,26 @@ func NewTable() *Table {
 }
 
 // AddEntry adds a new symbol when the address is known
-func (st *Table) AddEntry(symbol string, addr int) {
+func (st *Table) AddEntry(symbol string, addr int16) {
 	st.table[symbol] = addr
 }
 
 // AddVariable adds a new symbol to the symbol table using the
 // next available memory address, starting at 16.
-func (st *Table) AddVariable(symbol string) (int, error) {
+func (st *Table) AddVariable(symbol string) (int16, bool) {
 	st.table[symbol] = st.counter
 	st.counter++
 	addr, ok := st.table[symbol]
-	if !ok {
-		return -1, fmt.Errorf("Symbol %v is not in symbol table", symbol)
-	}
-	return addr, nil
+	return addr, ok
 }
 
 // GetAddr is a getter for addresses
-func (st *Table) GetAddr(symbol string) (int, error) {
+func (st *Table) GetAddr(symbol string) (int16, bool) {
 	addr, ok := st.table[symbol]
-	if !ok {
-		return -1, fmt.Errorf("Symbol %v is not in symbol table", symbol)
-	}
-	return addr, nil
+	return addr, ok
+}
+
+func (st *Table) Contains(symbol string) bool {
+	_, ok := st.table[symbol]
+	return ok
 }

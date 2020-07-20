@@ -1,5 +1,5 @@
 format:
 		@go fmt
 
-build:
-		@go run cmd/hasm/main.go
+run:
+		@go run cmd/hasm/hasm.go ./test_files/pong/Pong.asm

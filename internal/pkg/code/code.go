@@ -1,7 +1,5 @@
 package code
 
-import "fmt"
-
 // Code is a struct containing tables for comparison, destinations, and jump commands.
 type Code struct {
 	compTable map[string]string
@@ -10,7 +8,7 @@ type Code struct {
 }
 
 // NewCode returns a Code struct
-func NewCode() *Code {
+func New() *Code {
 	return &Code{
 		compTable: map[string]string{
 			"0":   "0101010",
@@ -66,28 +64,19 @@ func NewCode() *Code {
 }
 
 // Comp is a getter for comparison operators
-func (c *Code) Comp(mnem string) (string, error) {
-	binary, ok := c.compTable[mnem]
-	if !ok {
-		return "", fmt.Errorf("Mnemonic %v is not in the comparison table", mnem)
-	}
-	return binary, nil
+func (c *Code) Comp(mnemomic string) (string, bool) {
+	binary, ok := c.compTable[mnemomic]
+	return binary, ok
 }
 
 // Jump is a getter for jump operators
-func (c *Code) Jump(mnem string) (string, error) {
-	binary, ok := c.jumpTable[mnem]
-	if !ok {
-		return "", fmt.Errorf("Mnemonic %v is not in the jump table", mnem)
-	}
-	return binary, nil
+func (c *Code) Jump(mnemomic string) (string, bool) {
+	binary, ok := c.jumpTable[mnemomic]
+	return binary, ok
 }
 
 // Dest is a getter for destination operators
-func (c *Code) Dest(mnem string) (string, error) {
-	binary, ok := c.destTable[mnem]
-	if !ok {
-		return "", fmt.Errorf("Mnemonic %v is not in the destination table", mnem)
-	}
-	return binary, nil
+func (c *Code) Dest(mnemomic string) (string, bool) {
+	binary, ok := c.destTable[mnemomic]
+	return binary, ok
 }

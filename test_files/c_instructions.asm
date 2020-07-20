@@ -1,0 +1,4 @@
+D=D-A
+D;JGT
+M=M+1
+M=M-1;JGT
