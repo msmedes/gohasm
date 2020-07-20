@@ -3,7 +3,6 @@ package parser
 import (
 	"fmt"
 	"gohasm/internal/pkg/types"
-	"strings"
 )
 
 type CInstruction struct {
@@ -85,8 +84,7 @@ func (p *Parser) currentCommand() string {
 func (p *Parser) commandType() types.Command {
 	p.resetCommands()
 	var commandType types.Command
-	command := p.currentCommand()
-	switch firstChar := command[0]; firstChar {
+	switch string(p.currentCommand()[0]) {
 	case "@":
 		commandType = types.ACommand
 	case "(":
