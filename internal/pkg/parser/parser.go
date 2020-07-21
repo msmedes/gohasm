@@ -8,12 +8,17 @@ import (
 	"strings"
 )
 
+// CInstruction is a struct representing a C Instruction
 type CInstruction struct {
 	comp string
 	dest string
 	jump string
 }
 
+// Parser is a struct responsible for loading the file to be converted,
+// parsing lines to generate instructions, and advancing through the file.
+// The assembler is responsible for calling Advance() to update the state
+// of the Parser.
 type Parser struct {
 	filePath           string
 	LineNumber         int
@@ -26,6 +31,7 @@ type Parser struct {
 	InstructionCounter int16
 }
 
+// New returns a new Parser
 func New(filePath string) *Parser {
 	return &Parser{
 		filePath:           filePath,
@@ -69,6 +75,8 @@ func processLine(line string) string {
 	return line
 }
 
+// Reset returns the Parser to the beginning of the file.  Used after the
+// first symbol collection pass.
 func (p *Parser) Reset() {
 	p.LineNumber = -1
 }
@@ -81,10 +89,13 @@ func (p *Parser) resetCommands() {
 	p.jump = ""
 }
 
+// HasMoreCommands returns whether or not there are more commands to parse.
 func (p *Parser) HasMoreCommands() bool {
 	return p.LineNumber < len(p.file)-1
 }
 
+// Advance increments the LineNumber index and consumes the next line to be
+// parsed, updating the state of the Parser.
 func (p *Parser) Advance() {
 	p.LineNumber++
 	p.CurrentCommandType = p.CommandType()
@@ -114,7 +125,7 @@ func (p *Parser) currentCommand() string {
 	return ""
 }
 
-func (p *Parser) CommandType() types.Command {
+func (p *Parser) commandType() types.Command {
 	p.resetCommands()
 	var commandType types.Command
 	switch string(p.currentCommand()[0]) {
@@ -132,6 +143,8 @@ func (p *Parser) parseACommand() string {
 	return p.currentCommand()[1:]
 }
 
+// Comp returns the current comparator value in the parser, or an error
+// if there is none.  Can only be returned for C Commands.
 func (p *Parser) Comp() (string, error) {
 	if p.CurrentCommandType == types.CCommand {
 		return p.comp, nil
@@ -139,6 +152,8 @@ func (p *Parser) Comp() (string, error) {
 	return "", fmt.Errorf("comp command cannot be returned for %v, only C Commands", p.CurrentCommandType)
 }
 
+// Dest returns the current destination value in the parser, or an error
+// if there is none.  Can only be returned for C Commands.
 func (p *Parser) Dest() (string, error) {
 	if p.CurrentCommandType == types.CCommand {
 		return p.dest, nil
@@ -146,6 +161,11 @@ func (p *Parser) Dest() (string, error) {
 	return "", fmt.Errorf("dest command cannot be returned for %v, only C Commands", p.CurrentCommandType)
 }
 
+// Jump returns the current jump value in the parser, or an error
+// if there is none.  Can only be returned for C Commands.  Note:
+// jump may be "NONE" which means it was omitted in the source assembly code,
+// however that value has a corresponding binary code which needs to be
+// concatenated to the output string.
 func (p *Parser) Jump() (string, error) {
 	if p.CurrentCommandType == types.CCommand {
 		return p.jump, nil
@@ -153,6 +173,8 @@ func (p *Parser) Jump() (string, error) {
 	return "", fmt.Errorf("jump command cannot be returned for %v, only c commands", p.CurrentCommandType)
 }
 
+// Symbol returns the symbol value in the parser, or an error
+// if there is none.  Can only be returned for A or L Commands.
 func (p *Parser) Symbol() (string, error) {
 	if p.CurrentCommandType != types.CCommand {
 		return p.symbol, nil

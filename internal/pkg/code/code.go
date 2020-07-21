@@ -7,7 +7,7 @@ type Code struct {
 	jumpTable map[string]string
 }
 
-// NewCode returns a Code struct
+// New returns a Code struct with initialized comp, dest, and jump tables.
 func New() *Code {
 	return &Code{
 		compTable: map[string]string{
@@ -64,19 +64,19 @@ func New() *Code {
 }
 
 // Comp is a getter for comparison operators
-func (c *Code) Comp(mnemomic string) (string, bool) {
-	binary, ok := c.compTable[mnemomic]
+func (c *Code) Comp(mnemonic string) (string, bool) {
+	binary, ok := c.compTable[mnemonic]
 	return binary, ok
 }
 
 // Jump is a getter for jump operators
-func (c *Code) Jump(mnemomic string) (string, bool) {
-	binary, ok := c.jumpTable[mnemomic]
+func (c *Code) Jump(mnemonic string) (string, bool) {
+	binary, ok := c.jumpTable[mnemonic]
 	return binary, ok
 }
 
 // Dest is a getter for destination operators
-func (c *Code) Dest(mnemomic string) (string, bool) {
-	binary, ok := c.destTable[mnemomic]
+func (c *Code) Dest(mnemonic string) (string, bool) {
+	binary, ok := c.destTable[mnemonic]
 	return binary, ok
 }
