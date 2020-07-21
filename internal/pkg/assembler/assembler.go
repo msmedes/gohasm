@@ -29,7 +29,7 @@ func New(filePath string) *Assembler {
 		parser:    parser.New(filePath),
 		code:      code.New(),
 		symbol:    symbol.New(),
-		Buffer:    make([]string, 0),
+		Buffer:    []string{},
 		assembled: false,
 	}
 }

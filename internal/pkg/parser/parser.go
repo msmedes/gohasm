@@ -36,7 +36,7 @@ func New(filePath string) *Parser {
 }
 
 func loadFile(filePath string) []string {
-	output := make([]string, 0)
+	var output []string
 	file, err := os.Open(filePath)
 	if err != nil {
 		fmt.Println(err)
