@@ -173,7 +173,6 @@ func (p *Parser) parseCCommand() *CInstruction {
 		jump = p.currentCommand()[semiIndex+1:]
 		comp = p.currentCommand()[equalIndex+1 : semiIndex]
 	} else {
-		jump = "NONE"
 		comp = p.currentCommand()[equalIndex+1:]
 	}
 	return &CInstruction{comp, dest, jump}

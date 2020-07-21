@@ -14,6 +14,7 @@ import (
 	"strings"
 )
 
+// Assembler struct
 type Assembler struct {
 	filePath  string
 	parser    *parser.Parser
@@ -23,6 +24,7 @@ type Assembler struct {
 	assembled bool
 }
 
+// New returns a new Assembler
 func New(filePath string) *Assembler {
 	return &Assembler{
 		filePath:  filePath,
@@ -34,6 +36,7 @@ func New(filePath string) *Assembler {
 	}
 }
 
+// Assemble generates machine code from the given .asm file
 func (a *Assembler) Assemble() {
 	a.processLCommands()
 	for a.parser.HasMoreCommands() {
@@ -80,7 +83,7 @@ func (a *Assembler) processACommand() {
 	} else {
 		addr, ok := a.symbol.GetAddr(sym)
 		if !ok {
-			addr, ok = a.symbol.AddVariable(sym)
+			addr, _ = a.symbol.AddVariable(sym)
 		}
 		binary := fmt.Sprintf("%016b", addr)
 		a.Buffer = append(a.Buffer, binary)
@@ -116,6 +119,8 @@ func (a *Assembler) processCCommand() {
 	a.Buffer = append(a.Buffer, fmt.Sprintf("111%s%s%s", comp, dest, jump))
 }
 
+// WriteToFile writes the machine code stored in the Assembler buffer field
+// to a file with a .hack extension
 func (a *Assembler) WriteToFile() {
 	if a.assembled {
 		dir, file := filepath.Split(a.filePath)
