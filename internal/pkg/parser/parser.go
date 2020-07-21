@@ -98,7 +98,7 @@ func (p *Parser) HasMoreCommands() bool {
 // parsed, updating the state of the Parser.
 func (p *Parser) Advance() {
 	p.LineNumber++
-	p.CurrentCommandType = p.CommandType()
+	p.CurrentCommandType = p.commandType()
 	if p.CurrentCommandType == types.ACommand {
 		p.symbol = p.parseACommand()
 	}
