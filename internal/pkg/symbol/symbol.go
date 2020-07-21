@@ -6,7 +6,7 @@ type Table struct {
 	counter int16
 }
 
-// NewTable returns a new Table
+// New returns a new Table
 func New() *Table {
 	return &Table{
 		table: map[string]int16{
@@ -74,6 +74,8 @@ func (st *Table) GetAddr(symbol string) (int16, bool) {
 	return addr, ok
 }
 
+// Contains returns whether or not the symbol table contains
+// the given symbol
 func (st *Table) Contains(symbol string) bool {
 	_, ok := st.table[symbol]
 	return ok
