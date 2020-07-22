@@ -6,5 +6,5 @@ To run:
 
 `make run`
 will run 
-`go run <file_to_conver>` 
-which includes the compilation step, or build your own binary and run it that way (~20x faster).
+`go run <file_to_convert>` 
+which includes the compilation step, or build your own binary (`go build ./cmd/hasm/hasm.go`) and run it that way (~20x faster).
